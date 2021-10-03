@@ -5,9 +5,12 @@ export const useField = (name) =>{
 
   const onChange = (event) => setValue(event.target.value)
 
+  const onClear = () => setValue('')
+
+  const {...baseAttri} = {name, value, onChange}
+  
   return {
-    name,
-    value,
-    onChange
+    baseAttri,
+    onClear
   }
 }
