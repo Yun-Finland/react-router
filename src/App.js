@@ -119,10 +119,16 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote ${anecdote.content} has been created!`)
+    setTimeout(()=>{
+      setNotification("")
+    },10000)
   }
 
-  const anecdoteById = (id) =>
-    anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) => anecdotes.find(a => a.id === id)
+
+  const match = useRouteMatch('/anecdotes/:id')
+  const anecdote = match ? anecdoteById(match.params.id):null
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -135,13 +141,11 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
-  const match = useRouteMatch('/anecdotes/:id')
-  const anecdote = match ? anecdotes.find(n=>Number(n.id) === Number(match.params.id)):null
-
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification}
 
       <Switch>
         <Route path='/anecdotes/:id'>
